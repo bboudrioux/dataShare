@@ -9,6 +9,9 @@ import {
   Get,
   Param,
   Delete,
+  Res,
+  StreamableFile,
+  Query,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -18,9 +21,11 @@ import {
   ApiBody,
   ApiParam,
   ApiBearerAuth,
+  ApiQuery,
 } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
+import type { Response } from 'express';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { FileOwnerGuard } from '../../common/guards/file-owner.guard';
 import { MulterExceptionFilter } from '../../common/filters/multer-exception.filter';
@@ -94,6 +99,38 @@ export class FilesController {
   @UseGuards(FileOwnerGuard)
   getOne(@Param('id') id: string) {
     return this.filesService.findById(id);
+  }
+
+  @Get(':id/download')
+  @ApiOperation({ summary: 'Télécharger le fichier physiquement' })
+  @ApiParam({ name: 'id', description: 'ID du fichier' })
+  @ApiQuery({
+    name: 'password',
+    required: false,
+    description: 'Mot de passe si le fichier est protégé',
+  })
+  @ApiResponse({ status: 200, description: 'Le téléchargement commence.' })
+  @ApiResponse({
+    status: 403,
+    description: 'Mot de passe incorrect ou accès refusé.',
+  })
+  @UseGuards(FileOwnerGuard)
+  async download(
+    @Param('id') id: string,
+    @Query('password') password: string,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const { stream, name, type } = await this.filesService.getDownloadableFile(
+      id,
+      password,
+    );
+
+    res.set({
+      'Content-Type': type,
+      'Content-Disposition': `attachment; filename="${name}"`,
+    });
+
+    return new StreamableFile(stream);
   }
 
   @Delete(':id')

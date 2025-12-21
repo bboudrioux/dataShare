@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { FileRepository } from './files.repository';
 import { UploadFileDto } from './dtos/upload-file.dto';
 import { PasswordService } from '../auth/password.service';
@@ -49,6 +53,44 @@ export class FilesService {
         connect: { id: userId },
       },
     });
+  }
+
+  async getDownloadableFile(id: string, password?: string) {
+    const fileInfo = await this.findById(id);
+    const filePath = path.join(process.cwd(), 'uploads', fileInfo.id);
+
+    const now = new Date();
+    if (fileInfo.expiration_date < now) {
+      throw new UnauthorizedException(
+        "Ce fichier a expiré et n'est plus disponible",
+      );
+    }
+
+    if (!fs.existsSync(filePath)) {
+      throw new NotFoundException(
+        'Le fichier physique est introuvable sur le serveur',
+      );
+    }
+
+    if (fileInfo.password) {
+      if (!password) {
+        throw new UnauthorizedException('Ce fichier nécessite un mot de passe');
+      }
+
+      const isPasswordValid = await PasswordService.compare(
+        password,
+        fileInfo.password,
+      );
+      if (!isPasswordValid) {
+        throw new UnauthorizedException('Mot de passe incorrect');
+      }
+    }
+
+    return {
+      stream: fs.createReadStream(filePath),
+      name: fileInfo.name,
+      type: fileInfo.type,
+    };
   }
 
   async findByUser(userId: string) {

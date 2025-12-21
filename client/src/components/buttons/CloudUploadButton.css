@@ -1,0 +1,40 @@
+.cloud-upload-btn {
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  background-color: #0d040d;
+  border-style: solid;
+  border-color: #e2e0e2;
+  color: #fcecf4;
+
+  outline: none;
+  box-sizing: border-box;
+}
+
+.cloud-icon {
+  width: 42%;
+  height: 42%;
+  transition: transform 0.2s ease;
+}
+
+.cloud-upload-btn:hover:not(:disabled) {
+  filter: brightness(1.2);
+}
+
+.cloud-upload-btn:hover:not(:disabled) .cloud-icon {
+  transform: translateY(-3px);
+}
+
+.cloud-upload-btn:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.cloud-upload-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

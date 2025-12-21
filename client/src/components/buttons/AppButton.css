@@ -1,0 +1,53 @@
+.app-btn-generic {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 24px;
+  min-width: 160px;
+  border-radius: 12px;
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  outline: none;
+  border: 1.5px solid transparent;
+}
+
+.app-btn-generic.outline {
+  background-color: #fdf0e7;
+  border-color: #d9976b;
+  color: #b36b39;
+}
+
+.app-btn-generic.outline:hover:not(:disabled) {
+  background-color: #fbe5d6;
+  border-color: #b36b39;
+}
+
+.app-btn-generic.filled {
+  background-color: #e68a4d;
+  border-color: #c56d36;
+  color: #ffffff;
+}
+
+.app-btn-generic.filled:hover:not(:disabled) {
+  background-color: #d4793d;
+  box-shadow: 0 4px 12px rgba(212, 121, 61, 0.2);
+}
+
+.app-btn-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.app-btn-generic:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.app-btn-generic:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  filter: grayscale(0.5);
+}

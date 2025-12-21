@@ -4,6 +4,7 @@ import { AppController } from './app.controller';
 import { PrismaModule } from './common/prisma/prisma.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UserModule } from './modules/users/users.module';
+import { FilesModule } from './modules/files/files.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -12,6 +13,7 @@ import { UserModule } from './modules/users/users.module';
     PrismaModule,
     AuthModule,
     UserModule,
+    FilesModule,
   ],
   controllers: [AppController],
 })

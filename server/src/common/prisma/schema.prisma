@@ -1,0 +1,43 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id  String  @id @default(uuid())
+  email String  @unique
+  password String
+  files File[]
+  createdAt DateTime @default(now())
+}
+
+model File {
+  id String @id @default(uuid())
+  name String @db.VarChar(254)
+  type String @db.VarChar(25)
+  size Int
+  password String?
+  created_date DateTime @default(now())
+  expiration_date DateTime
+  user  User @relation(fields: [user_id], references: [id])
+  user_id String
+  tags  File_Tags[]
+}
+
+model Tag {
+  id String @id @default(uuid())
+  name String @db.VarChar(30)
+  files File_Tags[]
+}
+
+model File_Tags {
+  tag Tag @relation(fields: [tag_id], references: [id])
+  tag_id  String
+  file  File  @relation(fields: [file_id], references: [id])
+  file_id String
+
+  @@id([tag_id, file_id])
+}

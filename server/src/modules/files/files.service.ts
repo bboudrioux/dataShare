@@ -3,6 +3,7 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
+import { Cron, CronExpression } from '@nestjs/schedule';
 import { FileRepository } from './files.repository';
 import { UploadFileDto } from './dtos/upload-file.dto';
 import { PasswordService } from '../auth/password.service';
@@ -130,5 +131,27 @@ export class FilesService {
     await this.filesRepository.delete(id);
 
     return { message: 'Fichier supprimé avec succès' };
+  }
+
+  @Cron(CronExpression.EVERY_HOUR)
+  async handleFileCleanup() {
+    const now = new Date();
+
+    const expiredFiles = await this.filesRepository.findExpired(now);
+
+    for (const file of expiredFiles) {
+      try {
+        const filePath = path.join(process.cwd(), 'uploads', file.id);
+        if (fs.existsSync(filePath)) {
+          fs.unlinkSync(filePath);
+        }
+
+        await this.filesRepository.delete(file.id);
+
+        console.log(`Fichier expiré supprimé : ${file.name} (${file.id})`);
+      } catch (error) {
+        console.error(`Erreur lors du nettoyage du fichier ${file.id}:`, error);
+      }
+    }
   }
 }

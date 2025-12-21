@@ -26,6 +26,16 @@ export class FileRepository {
     });
   }
 
+  async findExpired(now: Date) {
+    return this.prisma.file.findMany({
+      where: {
+        expiration_date: {
+          lt: now,
+        },
+      },
+    });
+  }
+
   create(data: Prisma.FileCreateInput): Promise<File> {
     return this.prisma.file.create({ data });
   }

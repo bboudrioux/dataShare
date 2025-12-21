@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { FileRepository } from './files.repository';
 import { UploadFileDto } from './dtos/upload-file.dto';
 import { PasswordService } from '../auth/password.service';
@@ -49,5 +49,44 @@ export class FilesService {
         connect: { id: userId },
       },
     });
+  }
+
+  async findByUser(userId: string) {
+    const files = await this.filesRepository.findByUser(userId);
+
+    const now = new Date();
+
+    return files.map((file) => ({
+      id: file.id,
+      name: file.name,
+      size: file.size.toString(),
+      created_date: file.created_date,
+      expiration_date: file.expiration_date,
+      status: file.expiration_date > now ? 'valide' : 'expiré',
+      hasPassword: !!file.password,
+    }));
+  }
+
+  async findById(id: string) {
+    const file = await this.filesRepository.findById(id);
+
+    if (!file) {
+      throw new NotFoundException('File not found');
+    }
+
+    return file;
+  }
+
+  async delete(id: string) {
+    const file = await this.findById(id);
+
+    const filePath = path.join(process.cwd(), 'uploads', file.id);
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+    }
+
+    await this.filesRepository.delete(id);
+
+    return { message: 'Fichier supprimé avec succès' };
   }
 }

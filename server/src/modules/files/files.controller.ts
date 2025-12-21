@@ -6,6 +6,9 @@ import {
   UseFilters,
   UploadedFile,
   Body,
+  Get,
+  Param,
+  Delete,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -13,11 +16,13 @@ import {
   ApiConsumes,
   ApiResponse,
   ApiBody,
+  ApiParam,
   ApiBearerAuth,
 } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
+import { FileOwnerGuard } from '../../common/guards/file-owner.guard';
 import { MulterExceptionFilter } from '../../common/filters/multer-exception.filter';
 import { GetUser } from '../../common/decorators/get-user.decorator';
 import { GeneratedFileId } from '../../common/decorators/file-id.decorator';
@@ -72,5 +77,30 @@ export class FilesController {
       }
       throw error;
     }
+  }
+
+  @Get()
+  @ApiOperation({ summary: "Liste des fichiers de l'utilisateur connecté" })
+  @ApiResponse({ status: 200, description: 'Liste récupérée.' })
+  getAll(@GetUser('userId') userId: string) {
+    return this.filesService.findByUser(userId);
+  }
+
+  @Get(':id')
+  @ApiOperation({
+    summary: "Récupérer les métadonnées d'un fichier spécifique",
+  })
+  @ApiParam({ name: 'id', description: 'ID unique du fichier (UUID)' })
+  @UseGuards(FileOwnerGuard)
+  getOne(@Param('id') id: string) {
+    return this.filesService.findById(id);
+  }
+
+  @Delete(':id')
+  @ApiOperation({ summary: 'Supprimer manuellement un fichier' })
+  @ApiResponse({ status: 200, description: 'Fichier supprimé.' })
+  @UseGuards(FileOwnerGuard)
+  delete(@Param('id') id: string) {
+    return this.filesService.delete(id);
   }
 }

@@ -2,7 +2,11 @@ import { useNavigate, useLocation } from "react-router";
 import AppButton from "../buttons/AppButton";
 import "./Header.css";
 
-const Header = () => {
+interface HeaderProps {
+  setToken?: (token: string | null) => void;
+}
+
+const Header = ({ setToken }: HeaderProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   const isDashboard = location.pathname === "/dashboard";
@@ -11,6 +15,13 @@ const Header = () => {
     window.dispatchEvent(new CustomEvent("open-upload-modal"));
   const triggerMenu = () =>
     window.dispatchEvent(new CustomEvent("toggle-sidebar"));
+
+  const logout = () => {
+    if (setToken) {
+      setToken(null);
+    }
+    navigate("/login");
+  };
 
   return (
     <header className="app-header">
@@ -45,10 +56,7 @@ const Header = () => {
               onClick={triggerModal}
               className="btn-add-mobile"
             />
-            <button
-              className="logout-link hide-mobile"
-              onClick={() => navigate("/login")}
-            >
+            <button className="logout-link hide-mobile" onClick={logout}>
               Déconnexion
             </button>
           </>

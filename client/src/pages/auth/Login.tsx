@@ -1,17 +1,33 @@
-import { useNavigate } from "react-router";
+import { useNavigate, useOutletContext } from "react-router";
+import { login } from "../../services/auth.service";
 import LoginForm from "../../components/cards/LoginForm";
 
 function Login() {
   const navigate = useNavigate();
+  const { setToken } = (
+    useOutletContext as () => {
+      token: string | null;
+      setToken: (token: string | null) => void;
+    }
+  )();
+
+  const handleLogin = async (data: { email: string; password: string }) => {
+    try {
+      const response = await login(data.email, data.password);
+      setToken(response.access_token);
+      navigate("/dashboard");
+    } catch (error) {
+      console.error(
+        "Erreur lors de la connexion : " +
+          (error as { message?: string }).message
+      );
+    }
+  };
 
   return (
     <section>
       <LoginForm
-        onLogin={async (data) => {
-          console.log("Appel API de connexion avec :", data);
-          await new Promise((resolve) => setTimeout(resolve, 2000));
-          alert("Connecté avec succès !");
-        }}
+        onLogin={handleLogin}
         onNavigateToRegister={() => navigate("/signup")}
         isLoading={false}
       />

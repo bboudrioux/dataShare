@@ -4,7 +4,7 @@ import "./AppButton.css";
 interface AppButtonProps {
   label?: string;
   showIcon?: boolean;
-  variant?: "outline" | "filled";
+  variant?: "outline" | "outline-white" | "filled";
   onClick?: () => void;
   type?: "button" | "submit" | "reset";
   disabled?: boolean;

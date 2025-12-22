@@ -10,7 +10,7 @@ interface CloudUploadButtonProps {
 
 const CloudUploadButton: React.FC<CloudUploadButtonProps> = ({
   onClick,
-  size = 120,
+  size = 80,
   className = "",
   disabled = false,
 }) => {

@@ -1,0 +1,273 @@
+.dashboard-container {
+  display: flex;
+  min-height: calc(100vh - 72px);
+  background-color: #fff;
+}
+
+.sidebar {
+  width: 260px;
+  background: linear-gradient(180deg, #f29a76 0%, #e67e5d 100%);
+  display: flex;
+  flex-direction: column;
+  padding: 30px 0;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.sidebar-item {
+  margin: 0 15px;
+  padding: 14px 24px;
+  color: white;
+  font-weight: 600;
+  font-size: 15px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.25);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.sidebar-item:hover {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding: 0 30px;
+  color: white;
+  font-size: 11px;
+  opacity: 0.8;
+}
+
+.dashboard-content {
+  flex: 1;
+  padding: 40px 60px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.section-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #000;
+  margin: 0;
+}
+
+.filter-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+.tab {
+  padding: 8px 22px;
+  border-radius: 20px;
+  border: none;
+  background: #f2f2f2;
+  font-size: 14px;
+  font-weight: 500;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tab.active {
+  background: #e67e5d;
+  color: white;
+}
+
+.file-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 25px;
+  border: 1px solid #f0f0f0;
+  border-radius: 16px;
+  margin-bottom: 12px;
+  transition: transform 0.1s;
+}
+
+.file-row:hover {
+  border-color: #e0e0e0;
+  background-color: #fafafa;
+}
+
+.file-info-group {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.file-icon {
+  color: #333;
+}
+
+.file-texts {
+  display: flex;
+  flex-direction: column;
+}
+
+.file-name {
+  font-weight: 500;
+  font-size: 15px;
+  color: #1a1a1a;
+  max-width: 350px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.file-expiry {
+  font-size: 12px;
+  color: #999;
+  margin-top: 2px;
+}
+
+.file-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.secure-badge {
+  font-size: 14px;
+  margin-right: 10px;
+}
+
+.expired-msg {
+  color: #b0b0b0;
+  font-size: 13px;
+  font-style: italic;
+}
+
+.btn-table-action {
+  min-width: 100px !important;
+  padding: 8px 16px !important;
+  font-size: 13px !important;
+  border-radius: 10px !important;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  backdrop-filter: blur(5px);
+}
+
+.modal-card-wrapper {
+  position: relative;
+  animation: modalSlideUp 0.3s ease-out;
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 15px;
+  right: 25px;
+  background: none;
+  border: none;
+  font-size: 32px;
+  color: #999;
+  cursor: pointer;
+  z-index: 2001;
+  line-height: 1;
+}
+
+.modal-close-btn:hover {
+  color: #333;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px;
+  color: #888;
+  font-style: italic;
+  border: 2px dashed #eee;
+  border-radius: 16px;
+}
+
+@keyframes modalSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    left: -100%;
+    top: 0;
+    height: 100vh;
+    z-index: 3000;
+    transition: 0.3s ease;
+    width: 80%;
+  }
+
+  .sidebar.open {
+    left: 0;
+  }
+
+  .sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 2999;
+  }
+
+  .dashboard-content {
+    padding: 20px;
+  }
+
+  .file-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .file-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .close-sidebar-mobile {
+    display: block;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 30px;
+  }
+}
+
+.close-sidebar-mobile,
+.sidebar-logo-mobile {
+  display: none;
+}
+@media (max-width: 768px) {
+  .sidebar-logo-mobile {
+    display: block;
+    font-size: 24px;
+    font-weight: bold;
+    padding: 20px 30px;
+    color: white;
+  }
+}

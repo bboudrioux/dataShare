@@ -8,8 +8,6 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
   background-color: #0d040d;
-  border-style: solid;
-  border-color: #e2e0e2;
   color: #fcecf4;
 
   outline: none;

@@ -15,6 +15,17 @@
   border: 1.5px solid transparent;
 }
 
+.app-btn-generic.outline-white {
+  background-color: #ffffff;
+  border-color: #d9976b;
+  color: #b36b39;
+}
+
+.app-btn-generic.outline-white:hover:not(:disabled) {
+  background-color: #f8ebe2;
+  border-color: #b36b39;
+}
+
 .app-btn-generic.outline {
   background-color: #fdf0e7;
   border-color: #d9976b;

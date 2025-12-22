@@ -1,0 +1,23 @@
+.section-upload {
+  width: 100%;
+  height: calc(100vh - 122px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.section-upload .upload-button-container {
+  border-radius: 50%;
+  background-color: rgba(47, 25, 13, 0.15);
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+.section-upload .upload-button-container:hover {
+  background-color: rgba(47, 25, 13, 0.25);
+}

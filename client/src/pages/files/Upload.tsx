@@ -1,25 +1,37 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
+import { uploadFile } from "../../services/files.service";
 import CloudUploadButton from "../../components/buttons/CloudUploadButton";
 import AddFileCard from "../../components/cards/AddFileCard";
 import "./Upload.css";
+import { useNavigate } from "react-router";
 
 function Upload() {
   const [showForm, setShowForm] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [mode, setMode] = useState<"upload" | "error_size" | "success">(
+    "upload"
+  );
+  const [shareUrl, setShareUrl] = useState<string | undefined>(undefined);
+  const navigate = useNavigate();
 
-  const handleApiCall = async (formData: {
+  const handleSubmitUpload = async (data: {
+    file: File | null;
     password?: string;
-    expiration: string;
+    expiration: number;
   }) => {
-    setLoading(true);
     try {
-      console.log("Appel API avec :", formData);
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      alert("Fichier téléversé avec succès !");
+      const { file, password, expiration } = data;
+      const uploadedFile = await uploadFile(
+        file as File,
+        new Date(expiration),
+        password
+      );
+      setShareUrl(`${window.location.origin}/share/${uploadedFile.id}`);
+      setMode("success");
     } catch (error) {
-      console.error("Erreur API", error);
-    } finally {
-      setLoading(false);
+      console.error("Erreur lors de l'upload du fichier :", error);
+      toast.warn("vous devez etre connecté pour uploader un fichier");
+      navigate("/login");
     }
   };
 
@@ -32,11 +44,9 @@ function Upload() {
         </div>
       ) : (
         <AddFileCard
-          fileName="IMG_9210_123123.png"
-          fileSize="2,6 Mo"
-          onChangeFile={() => console.log("Ouvrir sélecteur de fichier")}
-          onUpload={handleApiCall}
-          isLoading={loading}
+          shareUrl={shareUrl}
+          mode={mode}
+          onUpload={handleSubmitUpload}
         />
       )}
     </section>

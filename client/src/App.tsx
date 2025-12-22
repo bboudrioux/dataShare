@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router";
+import { Bounce, ToastContainer } from "react-toastify";
 import { setApiToken } from "./services/index.ts";
 import Header from "./components/partials/Header.tsx";
 import Footer from "./components/partials/Footer.tsx";
@@ -28,9 +29,22 @@ function App() {
 
   return (
     <>
-      <Header setToken={setToken} />
+      <Header token={token} setToken={setToken} />
       <main>
         <Outlet context={{ token, setToken }} />
+        <ToastContainer
+          position="top-left"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick={false}
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+          transition={Bounce}
+        />
       </main>
       <Footer />
     </>

@@ -167,6 +167,7 @@
 .modal-card-wrapper {
   position: relative;
   animation: modalSlideUp 0.3s ease-out;
+  width: 500px;
 }
 
 .modal-close-btn {

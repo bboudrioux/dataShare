@@ -4,7 +4,7 @@ import "./AppButton.css";
 interface AppButtonProps {
   label?: string;
   showIcon?: boolean;
-  variant?: "outline" | "outline-white" | "filled";
+  variant?: "outline" | "outline-white" | "filled" | "filled-dark";
   onClick?: MouseEventHandler<HTMLButtonElement>;
   type?: "button" | "submit" | "reset";
   disabled?: boolean;

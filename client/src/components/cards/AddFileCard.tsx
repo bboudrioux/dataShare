@@ -33,6 +33,7 @@ const AddFileCard: React.FC<AddFileCardProps> = ({
   isLoading = false,
 }) => {
   const hiddenFileInput = useRef<HTMLInputElement>(null);
+  const [copiedLink, setCopiedLink] = useState(false);
   const [password, setPassword] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [expiration, setExpiration] = useState(
@@ -65,6 +66,16 @@ const AddFileCard: React.FC<AddFileCardProps> = ({
     const files = event.target.files;
     if (files && files.length > 0) {
       setFile(files[0]);
+    }
+  };
+
+  const handleClick = () => {
+    if (mode === "download") onDownload?.(password);
+    else if (mode === "upload") onUpload?.({ file, password, expiration });
+    else if (mode === "success") {
+      navigator.clipboard.writeText(shareUrl || "");
+      setCopiedLink(true);
+      setTimeout(() => setCopiedLink(false), 2000);
     }
   };
 
@@ -209,18 +220,26 @@ const AddFileCard: React.FC<AddFileCardProps> = ({
         </div>
       )}
 
+      {copiedLink && (
+        <div className="info-success-box">
+          <span>Lien copier dans le presse papier</span>
+        </div>
+      )}
+
       {mode !== "error_expired" && (
         <div className="form-footer">
           <AppButton
-            label={mode === "download" ? "Télécharger" : "Téléverser"}
+            label={
+              mode === "download"
+                ? "Télécharger"
+                : mode === "success"
+                ? "Copier le lien"
+                : "Téléverser"
+            }
             variant="outline"
             className="btn-full"
             disabled={mode === "error_size" || isLoading}
-            onClick={() =>
-              mode === "download"
-                ? onDownload?.(password)
-                : onUpload?.({ file, password, expiration })
-            }
+            onClick={handleClick}
           />
         </div>
       )}

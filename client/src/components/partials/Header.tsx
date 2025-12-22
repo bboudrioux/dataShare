@@ -3,10 +3,11 @@ import AppButton from "../buttons/AppButton";
 import "./Header.css";
 
 interface HeaderProps {
+  token?: string | null;
   setToken?: (token: string | null) => void;
 }
 
-const Header = ({ setToken }: HeaderProps) => {
+const Header = ({ token, setToken }: HeaderProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   const isDashboard = location.pathname === "/dashboard";
@@ -48,14 +49,21 @@ const Header = ({ setToken }: HeaderProps) => {
       </div>
 
       <div className="header-actions">
-        {isDashboard ? (
+        {token ? (
           <>
-            <AppButton
-              label="Ajouter"
-              variant="filled"
-              onClick={triggerModal}
-              className="btn-add-mobile"
-            />
+            {isDashboard ? (
+              <AppButton
+                label="Ajouter un fichier"
+                variant="filled-dark"
+                onClick={triggerModal}
+              />
+            ) : (
+              <AppButton
+                label="Mon espace"
+                variant="filled-dark"
+                onClick={() => navigate("/dashboard")}
+              />
+            )}
             <button className="logout-link hide-mobile" onClick={logout}>
               Déconnexion
             </button>

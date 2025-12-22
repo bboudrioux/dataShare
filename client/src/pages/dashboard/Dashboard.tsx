@@ -7,8 +7,13 @@ import type { FileMeta } from "../../types/files.types";
 
 const Dashboard = () => {
   const [files, setFiles] = useState<FileMeta[]>([]);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [shareUrl, setShareUrl] = useState<string | undefined>(undefined);
+  const [mode, setMode] = useState<"upload" | "error_size" | "success">(
+    "upload"
+  );
   const [activeFilter, setActiveFilter] = useState<
     "Tous" | "Actifs" | "Expiré"
   >("Tous");
@@ -69,8 +74,9 @@ const Dashboard = () => {
         new Date(expiration),
         password
       );
+      setShareUrl(`${window.location.origin}/share/${uploadedFile.id}`);
+      setMode("success");
       setFiles((prevFiles) => [uploadedFile, ...prevFiles]);
-      setIsModalOpen(false);
     } catch (error) {
       console.error("Erreur lors de l'upload du fichier :", error);
     }
@@ -176,18 +182,31 @@ const Dashboard = () => {
       </div>
 
       {isModalOpen && (
-        <div className="modal-overlay" onClick={() => setIsModalOpen(false)}>
+        <div
+          className="modal-overlay"
+          onClick={() => {
+            setIsModalOpen(false);
+            setMode("upload");
+          }}
+        >
           <div
             className="modal-card-wrapper"
             onClick={(e) => e.stopPropagation()}
           >
             <button
               className="modal-close-btn"
-              onClick={() => setIsModalOpen(false)}
+              onClick={() => {
+                setIsModalOpen(false);
+                setMode("upload");
+              }}
             >
               ×
             </button>
-            <AddFileCard onUpload={handleSubmitUpload} />
+            <AddFileCard
+              mode={mode}
+              shareUrl={shareUrl}
+              onUpload={handleSubmitUpload}
+            />
           </div>
         </div>
       )}

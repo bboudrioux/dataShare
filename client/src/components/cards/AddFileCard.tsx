@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState, type ChangeEvent } from "react";
 import AppButton from "../buttons/AppButton";
 import "./AddFileCard.css";
 
@@ -11,31 +11,62 @@ type CardMode =
 
 interface AddFileCardProps {
   mode?: CardMode;
-  fileName: string;
-  fileSize: string;
   shareUrl?: string;
   expiryInfo?: string;
   errorMsg?: string;
-  onChangeFile: () => void;
-  onUpload?: (data: { password?: string; expiration: string }) => void;
+  onUpload?: (data: {
+    file: File | null;
+    password?: string;
+    expiration: number;
+  }) => void;
   onDownload?: (password?: string) => void;
   isLoading?: boolean;
 }
 
 const AddFileCard: React.FC<AddFileCardProps> = ({
   mode = "upload",
-  fileName,
-  fileSize,
   shareUrl,
   expiryInfo,
   errorMsg,
-  onChangeFile,
   onUpload,
   onDownload,
   isLoading = false,
 }) => {
+  const hiddenFileInput = useRef<HTMLInputElement>(null);
   const [password, setPassword] = useState("");
-  const [expiration, setExpiration] = useState("Une journée");
+  const [file, setFile] = useState<File | null>(null);
+  const [expiration, setExpiration] = useState(
+    () => Date.now() + 7 * 24 * 3600 * 1000
+  ); // Default to one week
+
+  const setExpirationDate = (value: string) => {
+    let expDate = Date.now();
+    switch (value) {
+      case "Une heure":
+        expDate += 3600 * 1000;
+        break;
+      case "Une journée":
+        expDate += 24 * 3600 * 1000;
+        break;
+      case "Une semaine":
+        expDate += 7 * 24 * 3600 * 1000;
+        break;
+      default:
+        expDate += 7 * 24 * 3600 * 1000;
+    }
+    setExpiration(expDate);
+  };
+
+  const handleFileClick = (): void => {
+    hiddenFileInput.current?.click();
+  };
+
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      setFile(files[0]);
+    }
+  };
 
   return (
     <div className={`file-card ${mode}`}>
@@ -63,17 +94,32 @@ const AddFileCard: React.FC<AddFileCardProps> = ({
               </svg>
             </div>
             <div className="file-text">
-              <span className="file-name">{fileName}</span>
-              <span className="file-size">{fileSize}</span>
+              {file && (
+                <>
+                  <span className="file-name">{file.name}</span>
+                  <span className="file-size">{file.size}</span>
+                </>
+              )}
+              {!file && (
+                <span className="file-name">Aucun fichier sélectionné</span>
+              )}
             </div>
           </div>
           {mode === "upload" && (
-            <AppButton
-              label="Changer"
-              variant="outline"
-              className="btn-small"
-              onClick={onChangeFile}
-            />
+            <>
+              <AppButton
+                label="Changer"
+                variant="outline"
+                className="btn-small"
+                onClick={() => handleFileClick()}
+              />
+              <input
+                type="file"
+                ref={hiddenFileInput}
+                onChange={handleFileChange}
+                style={{ display: "none" }}
+              />
+            </>
           )}
         </div>
       )}
@@ -154,12 +200,11 @@ const AddFileCard: React.FC<AddFileCardProps> = ({
           <label>Expiration</label>
           <select
             className="form-input"
-            value={expiration}
-            onChange={(e) => setExpiration(e.target.value)}
+            onChange={(e) => setExpirationDate(e.target.value)}
           >
             <option>Une heure</option>
             <option>Une journée</option>
-            <option>Une semaine</option>
+            <option selected>Une semaine</option>
           </select>
         </div>
       )}
@@ -174,7 +219,7 @@ const AddFileCard: React.FC<AddFileCardProps> = ({
             onClick={() =>
               mode === "download"
                 ? onDownload?.(password)
-                : onUpload?.({ password, expiration })
+                : onUpload?.({ file, password, expiration })
             }
           />
         </div>

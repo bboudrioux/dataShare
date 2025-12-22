@@ -1,17 +1,12 @@
 import { useState, useEffect, useMemo } from "react";
+import { uploadFile, getfiles } from "../../services/files.service";
 import AppButton from "../../components/buttons/AppButton";
 import AddFileCard from "../../components/cards/AddFileCard";
 import "./Dashboard.css";
-
-interface FileData {
-  id: number;
-  name: string;
-  expiry: string;
-  status: "active" | "expired";
-  secure: boolean;
-}
+import type { FileMeta } from "../../types/files.types";
 
 const Dashboard = () => {
+  const [files, setFiles] = useState<FileMeta[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeFilter, setActiveFilter] = useState<
@@ -19,43 +14,27 @@ const Dashboard = () => {
   >("Tous");
 
   const filteredFiles = useMemo(() => {
-    const allFiles: FileData[] = [
-      {
-        id: 1,
-        name: "IMG_9210_12312313131231231.jpg",
-        expiry: "Expire dans 2 jours",
-        status: "active",
-        secure: true,
-      },
-      {
-        id: 2,
-        name: "compo2.mp3",
-        expiry: "Expire demain",
-        status: "active",
-        secure: false,
-      },
-      {
-        id: 3,
-        name: "vacances_ardeche.mp4",
-        expiry: "Expiré",
-        status: "expired",
-        secure: false,
-      },
-      {
-        id: 4,
-        name: "rapport_final.pdf",
-        expiry: "Expire dans 5 jours",
-        status: "active",
-        secure: true,
-      },
-    ];
+    const allFiles: FileMeta[] = files;
     if (activeFilter === "Tous") return allFiles;
     if (activeFilter === "Actifs")
-      return allFiles.filter((f) => f.status === "active");
+      return allFiles.filter((f) => f.status === "valide");
     if (activeFilter === "Expiré")
-      return allFiles.filter((f) => f.status === "expired");
+      return allFiles.filter((f) => f.status === "invalide");
     return allFiles;
-  }, [activeFilter]);
+  }, [activeFilter, files]);
+
+  useEffect(() => {
+    const fetchFiles = async () => {
+      try {
+        const response = await getfiles();
+        setFiles(response);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des fichiers :", error);
+      }
+    };
+
+    fetchFiles();
+  }, []);
 
   useEffect(() => {
     const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
@@ -77,6 +56,20 @@ const Dashboard = () => {
       window.removeEventListener("keydown", handleEsc);
     };
   }, []);
+
+  const handleSubmitUpload = async (data: {
+    file: File | null;
+    password?: string;
+    expiration: number;
+  }) => {
+    try {
+      const { file, password, expiration } = data;
+      await uploadFile(file as File, new Date(expiration), password);
+      setIsModalOpen(false);
+    } catch (error) {
+      console.error("Erreur lors de l'upload du fichier :", error);
+    }
+  };
 
   return (
     <div className="dashboard-container">
@@ -119,7 +112,7 @@ const Dashboard = () => {
 
           <div className="file-list">
             {filteredFiles.length > 0 ? (
-              filteredFiles.map((file: FileData) => (
+              filteredFiles.map((file: FileMeta) => (
                 <div key={file.id} className={`file-row ${file.status}`}>
                   <div className="file-info-group">
                     <div className="file-icon">
@@ -139,13 +132,15 @@ const Dashboard = () => {
                     </div>
                     <div className="file-texts">
                       <span className="file-name">{file.name}</span>
-                      <span className="file-expiry">{file.expiry}</span>
+                      <span className="file-expiry">{file.status}</span>
                     </div>
                   </div>
 
                   <div className="file-actions">
-                    {file.secure && <span className="secure-badge">🔒</span>}
-                    {file.status !== "expired" ? (
+                    {file.hasPassword && (
+                      <span className="secure-badge">🔒</span>
+                    )}
+                    {file.status !== "invalide" ? (
                       <>
                         <AppButton
                           label="Supprimer"
@@ -187,12 +182,7 @@ const Dashboard = () => {
             >
               ×
             </button>
-            <AddFileCard
-              fileName="Sélectionnez un fichier..."
-              fileSize="-- Mo"
-              onChangeFile={() => console.log("Upload")}
-              onUpload={() => setIsModalOpen(false)}
-            />
+            <AddFileCard onUpload={handleSubmitUpload} />
           </div>
         </div>
       )}

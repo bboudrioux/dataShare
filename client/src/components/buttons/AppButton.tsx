@@ -1,11 +1,11 @@
-import React from "react";
+import React, { type MouseEventHandler } from "react";
 import "./AppButton.css";
 
 interface AppButtonProps {
   label?: string;
   showIcon?: boolean;
   variant?: "outline" | "outline-white" | "filled";
-  onClick?: () => void;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
   className?: string;

@@ -64,7 +64,12 @@ const Dashboard = () => {
   }) => {
     try {
       const { file, password, expiration } = data;
-      await uploadFile(file as File, new Date(expiration), password);
+      const uploadedFile = await uploadFile(
+        file as File,
+        new Date(expiration),
+        password
+      );
+      setFiles((prevFiles) => [uploadedFile, ...prevFiles]);
       setIsModalOpen(false);
     } catch (error) {
       console.error("Erreur lors de l'upload du fichier :", error);

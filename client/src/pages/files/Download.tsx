@@ -3,12 +3,11 @@ import { useParams } from "react-router";
 import { toast } from "react-toastify";
 import { isAxiosError } from "axios";
 import { downloadFile, getFileMeta } from "../../services/files.service";
+import DownloadFileCard from "../../components/cards/DownloadFileCard";
 import type { FileMeta } from "../../types/files.types";
-import AddFileCard from "../../components/cards/AddFileCard";
 import "./Download.css";
 
 function Download() {
-  const [loading, setLoading] = useState(false);
   const [fileInfo, setFileInfo] = useState<FileMeta | null>(null);
   const { id } = useParams<{ id: string }>();
 
@@ -30,7 +29,6 @@ function Download() {
 
   const handleDownload = async (id: string, password?: string) => {
     if (!fileInfo) return;
-    setLoading(true);
     try {
       const blob = await downloadFile(id, password);
       const url = window.URL.createObjectURL(new Blob([blob]));
@@ -49,17 +47,11 @@ function Download() {
         console.error("Erreur lors du téléchargement du fichier :", error);
       }
     }
-    setLoading(false);
   };
 
   return (
     <section className="section-download">
-      <AddFileCard
-        selectedFile={fileInfo}
-        isLoading={loading}
-        mode="download"
-        onDownload={handleDownload}
-      />
+      <DownloadFileCard selectedFile={fileInfo} onDownload={handleDownload} />
     </section>
   );
 }

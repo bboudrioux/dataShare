@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { uploadFile } from "../../services/files.service";
 import type { FileMeta } from "../../types/files.types";
 import CloudUploadButton from "../../components/buttons/CloudUploadButton";
-import AddFileCard from "../../components/cards/AddFileCard";
+import UploadFileCard from "../../components/cards/UploadFileCard";
 import "./Upload.css";
 
 function Upload() {
@@ -44,9 +44,9 @@ function Upload() {
           <CloudUploadButton onClick={() => setShowForm(true)} />
         </div>
       ) : (
-        <AddFileCard
-          shareUrl={shareUrl}
+        <UploadFileCard
           mode={mode}
+          shareUrl={shareUrl}
           onUpload={handleSubmitUpload}
         />
       )}

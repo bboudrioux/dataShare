@@ -1,5 +1,5 @@
 import type { FileMeta } from "../../types/files.types";
-import AddFileCard from "../cards/AddFileCard";
+import UploadFileCard from "../cards/UploadFileCard";
 import "./FileCardModal.css";
 
 interface FileCardModalProps {
@@ -34,7 +34,7 @@ const FileCardModal = (props: FileCardModalProps) => {
         >
           ×
         </button>
-        <AddFileCard
+        <UploadFileCard
           mode={mode}
           shareUrl={shareUrl}
           onUpload={handleSubmitUpload}

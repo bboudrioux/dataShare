@@ -6,6 +6,7 @@ import Sidebar from "../../components/partials/Sidebar";
 import FileCardModal from "../../components/modals/FileCardModal";
 import DeleteConfirmModal from "../../components/modals/DeleteConfirmModal";
 import AppButton from "../../components/buttons/AppButton";
+import { getExpiryLabel } from "../../utils/date";
 import type { FileMeta } from "../../types/files.types";
 import "./Dashboard.css";
 
@@ -147,7 +148,9 @@ const Dashboard = () => {
                     </div>
                     <div className="file-texts">
                       <span className="file-name">{file.name}</span>
-                      <span className="file-expiry">{file.status}</span>
+                      <span className={`file-expiry ${file.status}`}>
+                        {getExpiryLabel(file.expiration_date)}
+                      </span>
                     </div>
                   </div>
 

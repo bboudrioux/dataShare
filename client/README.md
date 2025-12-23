@@ -1,73 +1,51 @@
-# React + TypeScript + Vite
+# 💻 dataShare Client
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Interface utilisateur moderne pour la plateforme dataShare, permettant l'upload, la gestion et le téléchargement de fichiers sécurisés.
 
-Currently, two official plugins are available:
+## ⚙️ Configuration
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+| Nom              | Valeur                    |
+| :--------------- | :------------------------ |
+| **Framework**    | React 18+ (Vite)          |
+| **Langage**      | TypeScript                |
+| **Base URL API** | http://localhost:3000/api |
+| **Port de dév**  | 5173                      |
 
-## React Compiler
+## 🚀 Installation locale (sans Docker)
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+1. Allez dans le dossier client :
+   ```bash
+   cd client
+   ```
+2. Installez les dépendances :
+   ```bash
+   npm install
+   ```
+3. Lancez le client :
+   ```bash
+   npm run dev
+   ```
 
-## Expanding the ESLint configuration
+## 🔐 Gestion de l'Authentification
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+L'application sécurise les échanges avec le serveur via :
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **Stockage Local** : Conservation sécurisée du JWT (JSON Web Token) après authentification.
+- **Intercepteurs Axios** : Injection systématique du `Bearer Token` dans le header `Authorization` pour toutes les requêtes vers les routes protégées du serveur.
+- **Protection des Routes** : Système de redirection automatique vers la page de connexion pour les utilisateurs non authentifiés tentant d'accéder au Dashboard.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## ✨ Fonctionnalités UI
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- **Authentification (Login / Register)** :
+  - Formulaires de création de compte et de connexion avec validation des données.
+  - Gestion des retours d'erreurs API (identifiants incorrects, utilisateur déjà existant).
+- **Dashboard** : Vue d'ensemble des fichiers personnels avec badges de sécurité (🔒) pour les fichiers protégés et indicateurs de statut.
+- **Filtres intelligents** : Tri dynamique des fichiers par état (Tous / Actifs / Expirés).
+- **Upload Card** : Interface de téléversement permettant de configurer le fichier, un mot de passe optionnel et la durée de validité (1h, 1j, 1semaine).
+- **Download Card** : Page publique de récupération accessible via lien UUID, incluant des alertes visuelles sur le temps restant avant expiration.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🛠 Outils utilisés
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- **Axios** : Communication asynchrone avec l'API NestJS.
+- **React Router** : Gestion de la navigation SPA et des routes dynamiques pour le partage (`/files/:id`).
+- **React Toastify** : Feedback utilisateur instantané via notifications (succès d'upload, erreur de mot de passe, expiration).

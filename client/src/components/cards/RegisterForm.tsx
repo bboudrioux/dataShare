@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import AppButton from "../buttons/AppButton";
 import "./AuthForm.css";
 
@@ -20,7 +21,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      alert("Les mots de passe ne correspondent pas");
+      toast.warn("Les mots de passe ne correspondent pas.");
       return;
     }
     onRegister({ email, password });

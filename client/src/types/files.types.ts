@@ -7,7 +7,7 @@ interface FileMeta {
   created_date: Date;
   expiration_date: Date;
   user_id: string | null;
-  status: "valide" | "invalide";
+  status: "valide" | "expiré";
   hasPassword: boolean;
 }
 

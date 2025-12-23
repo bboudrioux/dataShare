@@ -1,4 +1,5 @@
 import { useNavigate, useOutletContext } from "react-router";
+import { toast } from "react-toastify";
 import { login } from "../../services/auth.service";
 import LoginForm from "../../components/cards/LoginForm";
 
@@ -17,6 +18,7 @@ function Login() {
       setToken(response.access_token);
       navigate("/dashboard");
     } catch (error) {
+      toast.error("Échec de la connexion. Vérifiez vos identifiants.");
       console.error(
         "Erreur lors de la connexion : " +
           (error as { message?: string }).message

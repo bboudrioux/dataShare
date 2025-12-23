@@ -22,6 +22,7 @@ model File {
   password String?
   created_date DateTime @default(now())
   expiration_date DateTime
+  deleted Boolean @default(false)
   user  User @relation(fields: [user_id], references: [id])
   user_id String
   tags  File_Tags[]

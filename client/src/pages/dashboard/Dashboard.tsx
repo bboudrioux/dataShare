@@ -1,13 +1,14 @@
 import { useState, useEffect, useMemo } from "react";
 import { uploadFile, getfiles } from "../../services/files.service";
+import Sidebar from "../../components/partials/Sidebar";
+import FileCardModal from "../../components/modals/FileCardModal";
 import AppButton from "../../components/buttons/AppButton";
-import AddFileCard from "../../components/cards/AddFileCard";
-import "./Dashboard.css";
 import type { FileMeta } from "../../types/files.types";
+import "./Dashboard.css";
+import { toast } from "react-toastify";
 
 const Dashboard = () => {
   const [files, setFiles] = useState<FileMeta[]>([]);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [shareUrl, setShareUrl] = useState<string | undefined>(undefined);
@@ -24,7 +25,7 @@ const Dashboard = () => {
     if (activeFilter === "Actifs")
       return allFiles.filter((f) => f.status === "valide");
     if (activeFilter === "Expiré")
-      return allFiles.filter((f) => f.status === "invalide");
+      return allFiles.filter((f) => f.status === "expiré");
     return allFiles;
   }, [activeFilter, files]);
 
@@ -34,6 +35,7 @@ const Dashboard = () => {
         const response = await getfiles();
         setFiles(response);
       } catch (error) {
+        toast.error("Échec de la récupération des fichiers.");
         console.error("Erreur lors de la récupération des fichiers :", error);
       }
     };
@@ -84,26 +86,10 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-container">
-      <aside className={`sidebar ${isSidebarOpen ? "open" : ""}`}>
-        <button
-          className="close-sidebar-mobile"
-          onClick={() => setIsSidebarOpen(false)}
-        >
-          ×
-        </button>
-        <div className="sidebar-logo-mobile">DataShare</div>
-        <nav className="sidebar-nav">
-          <div className="sidebar-item active">Mes fichiers</div>
-        </nav>
-        <div className="sidebar-footer">Copyright DataShare© 2025</div>
-      </aside>
-
-      {isSidebarOpen && (
-        <div
-          className="sidebar-overlay"
-          onClick={() => setIsSidebarOpen(false)}
-        ></div>
-      )}
+      <Sidebar
+        isSidebarOpen={isSidebarOpen}
+        setIsSidebarOpen={setIsSidebarOpen}
+      />
 
       <div className="dashboard-content">
         <section className="files-section">
@@ -151,7 +137,7 @@ const Dashboard = () => {
                     {file.hasPassword && (
                       <span className="secure-badge">🔒</span>
                     )}
-                    {file.status !== "invalide" ? (
+                    {file.status !== "expiré" ? (
                       <>
                         <AppButton
                           label="Supprimer"
@@ -182,33 +168,13 @@ const Dashboard = () => {
       </div>
 
       {isModalOpen && (
-        <div
-          className="modal-overlay"
-          onClick={() => {
-            setIsModalOpen(false);
-            setMode("upload");
-          }}
-        >
-          <div
-            className="modal-card-wrapper"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              className="modal-close-btn"
-              onClick={() => {
-                setIsModalOpen(false);
-                setMode("upload");
-              }}
-            >
-              ×
-            </button>
-            <AddFileCard
-              mode={mode}
-              shareUrl={shareUrl}
-              onUpload={handleSubmitUpload}
-            />
-          </div>
-        </div>
+        <FileCardModal
+          setIsModalOpen={setIsModalOpen}
+          shareUrl={shareUrl}
+          mode={mode}
+          setMode={setMode}
+          handleSubmitUpload={handleSubmitUpload}
+        />
       )}
     </div>
   );

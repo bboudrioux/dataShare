@@ -133,8 +133,9 @@ export class FilesService {
     return { message: 'Fichier supprimé avec succès' };
   }
 
-  @Cron(CronExpression.EVERY_HOUR)
+  @Cron(CronExpression.EVERY_30_MINUTES)
   async handleFileCleanup() {
+    console.info('Lancement du nettoyage des fichiers expirés...');
     const now = new Date();
 
     const expiredFiles = await this.filesRepository.findExpired(now);
@@ -146,7 +147,7 @@ export class FilesService {
           fs.unlinkSync(filePath);
         }
 
-        await this.filesRepository.delete(file.id);
+        await this.filesRepository.setAsExpired(file.id);
 
         console.log(`Fichier expiré supprimé : ${file.name} (${file.id})`);
       } catch (error) {

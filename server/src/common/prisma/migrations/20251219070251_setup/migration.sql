@@ -17,6 +17,7 @@ CREATE TABLE "File" (
     "password" TEXT,
     "created_date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "expiration_date" TIMESTAMP(3) NOT NULL,
+    "deleted" BOOLEAN DEFAULT FALSE,
     "user_id" TEXT NOT NULL,
 
     CONSTRAINT "File_pkey" PRIMARY KEY ("id")

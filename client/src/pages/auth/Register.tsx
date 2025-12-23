@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
 import { register } from "../../services/auth.service";
 import RegisterForm from "../../components/cards/RegisterForm";
 
@@ -11,6 +12,7 @@ function Register() {
       console.info("Inscription réussie !");
       navigate("/login");
     } catch (error) {
+      toast.error("Échec de l'inscription. Veuillez réessayer.");
       console.error(
         "Erreur lors de l'inscription : " +
           (error as { message?: string }).message

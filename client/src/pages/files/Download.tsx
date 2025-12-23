@@ -6,8 +6,9 @@ function Download() {
   const [loading, setLoading] = useState(false);
 
   const handleApiCall = async (formData: {
+    file: File | null;
     password?: string;
-    expiration: string;
+    expiration: number;
   }) => {
     setLoading(true);
     try {
@@ -24,9 +25,6 @@ function Download() {
   return (
     <section className="section-download">
       <AddFileCard
-        fileName="IMG_9210_123123.png"
-        fileSize="2,6 Mo"
-        onChangeFile={() => console.log("Ouvrir sélecteur de fichier")}
         onUpload={handleApiCall}
         isLoading={loading}
         mode="download"

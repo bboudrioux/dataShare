@@ -40,6 +40,13 @@ export class FileRepository {
     return this.prisma.file.create({ data });
   }
 
+  setAsExpired(id: string): Promise<File> {
+    return this.prisma.file.update({
+      where: { id },
+      data: { deleted: true },
+    });
+  }
+
   delete(id: string): Promise<File> {
     return this.prisma.file.delete({
       where: { id },

@@ -1,4 +1,6 @@
+import type { FileMeta } from "../../types/files.types";
 import AddFileCard from "../cards/AddFileCard";
+import "./FileCardModal.css";
 
 interface FileCardModalProps {
   setIsModalOpen: (isOpen: boolean) => void;
@@ -6,7 +8,7 @@ interface FileCardModalProps {
   mode: "upload" | "error_size" | "success";
   setMode: (mode: "upload" | "error_size" | "success") => void;
   handleSubmitUpload: (data: {
-    file: File | null;
+    file: File | FileMeta | null;
     password?: string;
     expiration: number;
   }) => Promise<void>;

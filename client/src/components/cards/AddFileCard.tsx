@@ -1,4 +1,6 @@
 import React, { useRef, useState, type ChangeEvent } from "react";
+import type { FileMeta } from "../../types/files.types";
+import formatBytes from "../../utils/formatBytes";
 import AppButton from "../buttons/AppButton";
 import "./AddFileCard.css";
 
@@ -10,20 +12,22 @@ type CardMode =
   | "error_expired";
 
 interface AddFileCardProps {
+  selectedFile?: FileMeta | null;
   mode?: CardMode;
   shareUrl?: string;
   expiryInfo?: string;
   errorMsg?: string;
   onUpload?: (data: {
-    file: File | null;
+    file: File | FileMeta | null;
     password?: string;
     expiration: number;
   }) => void;
-  onDownload?: (password?: string) => void;
+  onDownload?: (id: string, password?: string) => void;
   isLoading?: boolean;
 }
 
 const AddFileCard: React.FC<AddFileCardProps> = ({
+  selectedFile,
   mode = "upload",
   shareUrl,
   expiryInfo,
@@ -70,7 +74,8 @@ const AddFileCard: React.FC<AddFileCardProps> = ({
   };
 
   const handleClick = () => {
-    if (mode === "download") onDownload?.(password);
+    if (mode === "download")
+      onDownload?.((selectedFile as FileMeta)?.id, password);
     else if (mode === "upload") onUpload?.({ file, password, expiration });
     else if (mode === "success") {
       navigator.clipboard.writeText(shareUrl || "");
@@ -108,10 +113,18 @@ const AddFileCard: React.FC<AddFileCardProps> = ({
               {file && (
                 <>
                   <span className="file-name">{file.name}</span>
-                  <span className="file-size">{file.size}</span>
+                  <span className="file-size">{formatBytes(file.size)}</span>
                 </>
               )}
-              {!file && (
+              {selectedFile && (
+                <>
+                  <span className="file-name">{selectedFile.name}</span>
+                  <span className="file-size">
+                    {formatBytes(selectedFile.size)}
+                  </span>
+                </>
+              )}
+              {!file && !selectedFile && (
                 <span className="file-name">Aucun fichier sélectionné</span>
               )}
             </div>
@@ -193,12 +206,25 @@ const AddFileCard: React.FC<AddFileCardProps> = ({
         </div>
       )}
 
-      {(mode === "upload" || mode === "download") && (
+      {mode === "upload" && (
         <div className="form-group">
           <label>Mot de passe</label>
           <input
             type="password"
-            placeholder={mode === "download" ? "**********" : "Optionnel"}
+            placeholder={"Optionnel"}
+            className="form-input"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+      )}
+
+      {mode === "download" && selectedFile?.password && (
+        <div className="form-group">
+          <label>Mot de passe</label>
+          <input
+            type="password"
+            placeholder={"Saissisez le mot de passe..."}
             className="form-input"
             value={password}
             onChange={(e) => setPassword(e.target.value)}

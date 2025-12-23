@@ -1,10 +1,11 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { uploadFile } from "../../services/files.service";
+import type { FileMeta } from "../../types/files.types";
 import CloudUploadButton from "../../components/buttons/CloudUploadButton";
 import AddFileCard from "../../components/cards/AddFileCard";
 import "./Upload.css";
-import { useNavigate } from "react-router";
 
 function Upload() {
   const [showForm, setShowForm] = useState(false);
@@ -15,7 +16,7 @@ function Upload() {
   const navigate = useNavigate();
 
   const handleSubmitUpload = async (data: {
-    file: File | null;
+    file: File | FileMeta | null;
     password?: string;
     expiration: number;
   }) => {
@@ -26,7 +27,7 @@ function Upload() {
         new Date(expiration),
         password
       );
-      setShareUrl(`${window.location.origin}/share/${uploadedFile.id}`);
+      setShareUrl(`${window.location.origin}/files/${uploadedFile.id}`);
       setMode("success");
     } catch (error) {
       console.error("Erreur lors de l'upload du fichier :", error);

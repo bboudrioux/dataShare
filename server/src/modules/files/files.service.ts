@@ -43,7 +43,7 @@ export class FilesService {
       expirationDate = limitDate;
     }
 
-    return this.filesRepository.create({
+    const uploadedFile = await this.filesRepository.create({
       id: fileId,
       name: file.originalname,
       type: file.mimetype,
@@ -54,6 +54,16 @@ export class FilesService {
         connect: { id: userId },
       },
     });
+
+    return {
+      id: uploadedFile.id,
+      name: uploadedFile.name,
+      size: uploadedFile.size.toString(),
+      created_date: uploadedFile.created_date,
+      expiration_date: uploadedFile.expiration_date,
+      status: 'valide',
+      hasPassword: !!uploadedFile.password,
+    };
   }
 
   async getDownloadableFile(id: string, password?: string) {

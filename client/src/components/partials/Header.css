@@ -39,6 +39,22 @@ header button {
   cursor: pointer;
 }
 
+.logout-link {
+  background: #e67e5d;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.logout-link:hover {
+  background: #d16b4b;
+}
+
 @media (max-width: 768px) {
   .menu-mobile-btn {
     display: block;

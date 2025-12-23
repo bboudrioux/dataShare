@@ -4,7 +4,6 @@ import { Bounce, ToastContainer } from "react-toastify";
 import { setApiToken } from "./services/index.ts";
 import Header from "./components/partials/Header.tsx";
 import Footer from "./components/partials/Footer.tsx";
-import "./App.css";
 
 function App() {
   const navigate = useNavigate();
@@ -13,6 +12,7 @@ function App() {
   // 1. Synchroniser le token avec Axios au montage
   useEffect(() => {
     if (token) setApiToken(token);
+    else setApiToken("");
   }, [token]);
 
   // 2. Écouter l'événement de déconnexion forcée

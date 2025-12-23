@@ -26,7 +26,14 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response && error.response.status === 401) {
+    if (
+      error.response &&
+      error.response.status === 401 &&
+      error.response.message?.includes(
+        "Ce fichier nécessite un mot de passe"
+      ) &&
+      error.response.message?.includes("Mot de passe incorrect")
+    ) {
       // On émet un événement pour informer React que la session est finie
       window.dispatchEvent(new CustomEvent("unauthorized-access"));
       authToken = "";

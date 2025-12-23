@@ -37,13 +37,7 @@ export class ShareController {
       throw new UnauthorizedException('Ce lien a expiré');
     }
 
-    return {
-      name: file.name,
-      type: file.type,
-      size: file.size.toString(),
-      expiration_date: file.expiration_date,
-      isProtected: !!file.password,
-    };
+    return file;
   }
 
   @Get(':id/download')

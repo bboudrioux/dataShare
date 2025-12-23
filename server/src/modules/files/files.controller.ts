@@ -91,16 +91,6 @@ export class FilesController {
     return this.filesService.findByUser(userId);
   }
 
-  @Get(':id')
-  @ApiOperation({
-    summary: "Récupérer les métadonnées d'un fichier spécifique",
-  })
-  @ApiParam({ name: 'id', description: 'ID unique du fichier (UUID)' })
-  @UseGuards(FileOwnerGuard)
-  getOne(@Param('id') id: string) {
-    return this.filesService.findById(id);
-  }
-
   @Get(':id/download')
   @ApiOperation({ summary: 'Télécharger le fichier physiquement' })
   @ApiParam({ name: 'id', description: 'ID du fichier' })

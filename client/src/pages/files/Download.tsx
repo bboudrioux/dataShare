@@ -1,33 +1,64 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router";
+import { toast } from "react-toastify";
+import { isAxiosError } from "axios";
+import { downloadFile, getFileMeta } from "../../services/files.service";
+import type { FileMeta } from "../../types/files.types";
 import AddFileCard from "../../components/cards/AddFileCard";
 import "./Download.css";
 
 function Download() {
   const [loading, setLoading] = useState(false);
+  const [fileInfo, setFileInfo] = useState<FileMeta | null>(null);
+  const { id } = useParams<{ id: string }>();
 
-  const handleApiCall = async (formData: {
-    file: File | null;
-    password?: string;
-    expiration: number;
-  }) => {
+  useEffect(() => {
+    const fetchFileInfo = async () => {
+      try {
+        const file = await getFileMeta(id as string);
+        setFileInfo(file);
+      } catch (error) {
+        toast.error("Échec de la récupération des informations du fichier.");
+        console.error(
+          "Erreur lors de la récupération des informations du fichier :",
+          error
+        );
+      }
+    };
+    fetchFileInfo();
+  }, [id]);
+
+  const handleDownload = async (id: string, password?: string) => {
+    if (!fileInfo) return;
     setLoading(true);
     try {
-      console.log("Appel API avec :", formData);
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      alert("Fichier téléversé avec succès !");
-    } catch (error) {
-      console.error("Erreur API", error);
-    } finally {
-      setLoading(false);
+      const blob = await downloadFile(id, password);
+      const url = window.URL.createObjectURL(new Blob([blob]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", fileInfo.name);
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode?.removeChild(link);
+      toast.success("Téléchargement réussi !");
+    } catch (error: unknown) {
+      if (isAxiosError(error)) {
+        const text = await error.response?.data.text();
+        const message = JSON.parse(text).message;
+        toast.error(message || "Échec du téléchargement du fichier.");
+        console.error("Erreur lors du téléchargement du fichier :", error);
+      }
     }
+    setLoading(false);
   };
 
   return (
     <section className="section-download">
       <AddFileCard
-        onUpload={handleApiCall}
+        selectedFile={fileInfo}
         isLoading={loading}
         mode="download"
+        onDownload={handleDownload}
       />
     </section>
   );

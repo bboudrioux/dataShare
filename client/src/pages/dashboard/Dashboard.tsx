@@ -1,14 +1,18 @@
 import { useState, useEffect, useMemo } from "react";
-import { uploadFile, getfiles } from "../../services/files.service";
+import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
+import { uploadFile, getfiles, deleteFile } from "../../services/files.service";
 import Sidebar from "../../components/partials/Sidebar";
 import FileCardModal from "../../components/modals/FileCardModal";
+import DeleteConfirmModal from "../../components/modals/DeleteConfirmModal";
 import AppButton from "../../components/buttons/AppButton";
 import type { FileMeta } from "../../types/files.types";
 import "./Dashboard.css";
-import { toast } from "react-toastify";
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   const [files, setFiles] = useState<FileMeta[]>([]);
+  const [fileToDelete, setFileToDelete] = useState<FileMeta | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [shareUrl, setShareUrl] = useState<string | undefined>(undefined);
@@ -65,7 +69,7 @@ const Dashboard = () => {
   }, []);
 
   const handleSubmitUpload = async (data: {
-    file: File | null;
+    file: File | FileMeta | null;
     password?: string;
     expiration: number;
   }) => {
@@ -76,11 +80,25 @@ const Dashboard = () => {
         new Date(expiration),
         password
       );
-      setShareUrl(`${window.location.origin}/share/${uploadedFile.id}`);
+      setShareUrl(`${window.location.origin}/files/${uploadedFile.id}`);
       setMode("success");
       setFiles((prevFiles) => [uploadedFile, ...prevFiles]);
     } catch (error) {
       console.error("Erreur lors de l'upload du fichier :", error);
+    }
+  };
+
+  const handleDeleteFile = async () => {
+    try {
+      await deleteFile(fileToDelete!.id);
+      toast.success("Fichier supprimé avec succès.");
+      setFiles((prevFiles) =>
+        prevFiles.filter((file) => file.id !== fileToDelete!.id)
+      );
+      setFileToDelete(null);
+    } catch (error) {
+      toast.error("Échec de la suppression du fichier.");
+      console.error("Erreur lors de la suppression du fichier :", error);
     }
   };
 
@@ -143,11 +161,13 @@ const Dashboard = () => {
                           label="Supprimer"
                           variant="outline"
                           className="btn-table-action"
+                          onClick={() => setFileToDelete(file)}
                         />
                         <AppButton
                           label="Accéder →"
                           variant="outline"
                           className="btn-table-action"
+                          onClick={() => navigate(`/files/${file.id}`)}
                         />
                       </>
                     ) : (
@@ -175,6 +195,21 @@ const Dashboard = () => {
           setMode={setMode}
           handleSubmitUpload={handleSubmitUpload}
         />
+      )}
+
+      {fileToDelete && (
+        <div className="modal-overlay" onClick={() => setFileToDelete(null)}>
+          <div
+            className="modal-card-wrapper"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <DeleteConfirmModal
+              fileName={fileToDelete.name}
+              onCancel={() => setFileToDelete(null)}
+              onConfirm={handleDeleteFile}
+            />
+          </div>
+        </div>
       )}
     </div>
   );

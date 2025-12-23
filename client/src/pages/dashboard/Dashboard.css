@@ -4,39 +4,6 @@
   background-color: #fff;
 }
 
-.sidebar {
-  width: 260px;
-  background: linear-gradient(180deg, #f29a76 0%, #e67e5d 100%);
-  display: flex;
-  flex-direction: column;
-  padding: 30px 0;
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
-}
-
-.sidebar-item {
-  margin: 0 15px;
-  padding: 14px 24px;
-  color: white;
-  font-weight: 600;
-  font-size: 15px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.25);
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.sidebar-item:hover {
-  background: rgba(255, 255, 255, 0.35);
-}
-
-.sidebar-footer {
-  margin-top: auto;
-  padding: 0 30px;
-  color: white;
-  font-size: 11px;
-  opacity: 0.8;
-}
-
 .dashboard-content {
   flex: 1;
   padding: 40px 60px;
@@ -150,43 +117,6 @@
   border-radius: 10px !important;
 }
 
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2000;
-  backdrop-filter: blur(5px);
-}
-
-.modal-card-wrapper {
-  position: relative;
-  animation: modalSlideUp 0.3s ease-out;
-  width: 500px;
-}
-
-.modal-close-btn {
-  position: absolute;
-  top: 15px;
-  right: 25px;
-  background: none;
-  border: none;
-  font-size: 32px;
-  color: #999;
-  cursor: pointer;
-  z-index: 2001;
-  line-height: 1;
-}
-
-.modal-close-btn:hover {
-  color: #333;
-}
-
 .empty-state {
   text-align: center;
   padding: 40px;
@@ -208,30 +138,6 @@
 }
 
 @media (max-width: 768px) {
-  .sidebar {
-    position: fixed;
-    left: -100%;
-    top: 0;
-    height: 100vh;
-    z-index: 3000;
-    transition: 0.3s ease;
-    width: 80%;
-  }
-
-  .sidebar.open {
-    left: 0;
-  }
-
-  .sidebar-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.4);
-    z-index: 2999;
-  }
-
   .dashboard-content {
     padding: 20px;
   }
@@ -245,30 +151,5 @@
   .file-actions {
     width: 100%;
     justify-content: space-between;
-  }
-
-  .close-sidebar-mobile {
-    display: block;
-    position: absolute;
-    right: 20px;
-    top: 20px;
-    background: none;
-    border: none;
-    color: white;
-    font-size: 30px;
-  }
-}
-
-.close-sidebar-mobile,
-.sidebar-logo-mobile {
-  display: none;
-}
-@media (max-width: 768px) {
-  .sidebar-logo-mobile {
-    display: block;
-    font-size: 24px;
-    font-weight: bold;
-    padding: 20px 30px;
-    color: white;
   }
 }

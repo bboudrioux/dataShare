@@ -17,6 +17,20 @@
   - Utilisation de `Streams` pour le téléchargement afin de ne pas saturer la RAM du serveur lors du transfert de fichiers de 1 Go.
   - Indexation PostgreSQL sur les champs `ownerId` et `uuid`.
 
+## 🚀 Résultats des Tests de Charge (k6)
+
+Des tests de performance ont été réalisés sur l'endpoint critique d'upload (`POST /api/files/upload`) pour valider la stabilité du système.
+
+- **Configuration du test** :
+  - Charge : Jusqu'à 10 utilisateurs virtuels (VUs) simultanés.
+  - Durée : 2 minutes (montée en charge, plateau, descente).
+- **Métriques obtenues** :
+  - **Taux de succès** : 100% (877 requêtes réussies sur 877).
+  - **Débit (Throughput)** : ~7.3 uploads / seconde.
+  - **Latence (p95)** : 110.94 ms (95% des requêtes traitées en moins de 111ms).
+  - **Latence moyenne** : 45.46 ms.
+- **Conclusion** : Le serveur encaisse parfaitement une charge modérée avec une latence très faible, confirmant l'efficacité du traitement des fichiers.
+
 ## 📊 Métriques Clés de Suivi
 
 - **Taille moyenne des fichiers** : 50 Mo.

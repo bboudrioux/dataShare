@@ -159,7 +159,7 @@ export class FilesService {
 
         await this.filesRepository.setAsExpired(file.id);
 
-        console.log(`Fichier expiré supprimé : ${file.name} (${file.id})`);
+        console.info(`Fichier expiré supprimé : ${file.name} (${file.id})`);
       } catch (error) {
         console.error(`Erreur lors du nettoyage du fichier ${file.id}:`, error);
       }

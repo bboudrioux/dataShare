@@ -6,10 +6,9 @@
   padding: 0;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-
-  background-color: #0d040d;
-  color: #fcecf4;
-
+  background-color: rgba(6, 182, 212, 0.1);
+  color: #06b6d4;
+  border: 1.5px solid rgba(6, 182, 212, 0.25);
   outline: none;
   box-sizing: border-box;
 }
@@ -21,7 +20,9 @@
 }
 
 .cloud-upload-btn:hover:not(:disabled) {
-  filter: brightness(1.2);
+  background-color: rgba(6, 182, 212, 0.18);
+  border-color: rgba(6, 182, 212, 0.4);
+  box-shadow: 0 0 28px rgba(6, 182, 212, 0.2);
 }
 
 .cloud-upload-btn:hover:not(:disabled) .cloud-icon {

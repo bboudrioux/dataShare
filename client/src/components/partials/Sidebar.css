@@ -1,52 +1,61 @@
 .sidebar {
   width: 260px;
-  background: linear-gradient(180deg, #f29a76 0%, #e67e5d 100%);
+  background: #0a0e14;
   display: flex;
   flex-direction: column;
-  padding: 30px 0;
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+  padding: 28px 0;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  flex-shrink: 0;
 }
 
 .sidebar-item {
-  margin: 0 15px;
-  padding: 14px 24px;
-  color: white;
-  font-weight: 600;
-  font-size: 15px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.25);
+  margin: 0 12px;
+  padding: 10px 16px;
+  color: #64748b;
+  font-weight: 500;
+  font-size: 14px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.2s;
+  border: 1px solid transparent;
 }
 
-.sidebar-item:hover {
-  background: rgba(255, 255, 255, 0.35);
+.sidebar-item.active {
+  background: rgba(6, 182, 212, 0.12);
+  color: #22d3ee;
+  border-color: rgba(6, 182, 212, 0.2);
+}
+
+.sidebar-item:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.04);
+  color: #94a3b8;
 }
 
 .sidebar-logout {
-  margin: 20px 15px 0 15px;
-  padding: 12px 24px;
-  color: white;
-  font-weight: 600;
+  margin: 12px 12px 0 12px;
+  padding: 10px 16px;
+  color: #475569;
+  font-weight: 500;
   font-size: 14px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  background: none;
   cursor: pointer;
-  transition: background 0.2s;
-  border: none;
+  transition: all 0.2s;
+  border: 1px solid rgba(255, 255, 255, 0.05);
   text-align: left;
+  width: calc(100% - 24px);
 }
 
 .sidebar-logout:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.04);
+  color: #64748b;
 }
 
 .sidebar-footer {
   margin-top: auto;
-  padding: 0 30px;
-  color: white;
+  padding: 0 28px;
+  color: #334155;
   font-size: 11px;
-  opacity: 0.8;
 }
 
 .hide-desktop {
@@ -74,7 +83,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.65);
     z-index: 2999;
   }
 
@@ -85,8 +94,8 @@
     top: 20px;
     background: none;
     border: none;
-    color: white;
-    font-size: 30px;
+    color: #94a3b8;
+    font-size: 28px;
   }
 
   .hide-desktop {
@@ -102,9 +111,12 @@
 @media (max-width: 768px) {
   .sidebar-logo-mobile {
     display: block;
-    font-size: 24px;
-    font-weight: bold;
-    padding: 20px 30px;
-    color: white;
+    font-size: 18px;
+    font-weight: 800;
+    padding: 20px 28px;
+    background: linear-gradient(135deg, #06b6d4, #38bdf8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 }

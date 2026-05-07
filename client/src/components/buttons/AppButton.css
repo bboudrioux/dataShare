@@ -3,72 +3,72 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
-  padding: 12px 24px;
+  padding: 10px 22px;
   min-width: 160px;
-  border-radius: 12px;
-  font-family: "Inter", sans-serif;
-  font-size: 16px;
-  font-weight: 500;
+  border-radius: 8px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   outline: none;
-  border: 1.5px solid transparent;
+  border: 1px solid transparent;
 }
 
 .btn-small {
   padding: 4px 8px;
-  font-size: 14px;
+  font-size: 13px;
   min-width: 100px;
 }
 
 .app-btn-generic.outline-white {
-  background-color: #ffffff;
-  border-color: #d9976b;
-  color: #b36b39;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #94a3b8;
 }
 
 .app-btn-generic.outline-white:hover:not(:disabled) {
-  background-color: #f8ebe2;
-  border-color: #b36b39;
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #e2e8f0;
 }
 
 .app-btn-generic.outline {
-  background-color: #fdf0e7;
-  border-color: #d9976b;
-  color: #b36b39;
+  background-color: rgba(6, 182, 212, 0.08);
+  border-color: rgba(6, 182, 212, 0.22);
+  color: #22d3ee;
 }
 
 .app-btn-generic.outline:hover:not(:disabled) {
-  background-color: #fbe5d6;
-  border-color: #b36b39;
+  background-color: rgba(6, 182, 212, 0.14);
+  border-color: rgba(6, 182, 212, 0.38);
 }
 
 .app-btn-generic.filled {
-  background-color: #e68a4d;
-  border-color: #c56d36;
-  color: #ffffff;
+  background: linear-gradient(135deg, #06b6d4, #0ea5e9);
+  border-color: transparent;
+  color: #050508;
 }
 
 .app-btn-generic.filled:hover:not(:disabled) {
-  background-color: #d4793d;
-  box-shadow: 0 4px 12px rgba(212, 121, 61, 0.2);
+  filter: brightness(1.1);
+  box-shadow: 0 4px 16px rgba(6, 182, 212, 0.3);
 }
 
 .app-btn-generic.filled-dark {
-  padding: 5px 32px;
+  padding: 8px 24px;
   background-color: #000000;
   border-color: #000000;
   color: #ffffff;
 }
 
 .app-btn-generic.filled-dark:hover:not(:disabled) {
-  background-color: #222222;
-  box-shadow: 0 4px 12px rgba(34, 34, 34, 0.2);
+  background-color: #111111;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
 .app-btn-icon {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
 }
 
 .app-btn-generic:active:not(:disabled) {
@@ -76,15 +76,15 @@
 }
 
 .app-btn-generic:disabled {
-  opacity: 0.5;
+  opacity: 0.4;
   cursor: not-allowed;
   filter: grayscale(0.5);
 }
 
 @media screen and (max-width: 480px) {
   .app-btn-generic.filled-dark {
-    padding: 5px 10px;
-    font-size: 14px;
+    padding: 7px 14px;
+    font-size: 13px;
     min-width: 120px;
   }
 }

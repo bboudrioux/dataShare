@@ -6,12 +6,13 @@
   bottom: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.75);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 9999;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
 .modal-card-wrapper {
@@ -26,17 +27,18 @@
 
 .modal-close-btn {
   position: absolute;
-  top: 15px;
-  right: 25px;
+  top: 16px;
+  right: 22px;
   background: none;
   border: none;
-  font-size: 32px;
-  color: #999;
+  font-size: 28px;
+  color: #475569;
   cursor: pointer;
   z-index: 2001;
   line-height: 1;
+  transition: color 0.2s;
 }
 
 .modal-close-btn:hover {
-  color: #333;
+  color: #e2e8f0;
 }

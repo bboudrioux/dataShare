@@ -126,7 +126,7 @@
 }
 
 .file-expiry.expiré {
-  color: #334155;
+  color: #64748b;
 }
 
 .file-actions {
@@ -141,7 +141,7 @@
 }
 
 .expired-msg {
-  color: #334155;
+  color: #64748b;
   font-size: 13px;
   font-style: italic;
 }

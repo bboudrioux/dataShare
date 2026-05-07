@@ -17,7 +17,11 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --config ./test/jest-integration.json --coverage --runInBand --forceExit",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:integration": "jest --config ./test/jest-integration.json --runInBand --forceExit"
+    "test:integration": "jest --config ./test/jest-integration.json --runInBand --forceExit",
+    "seed": "ts-node --project tsconfig.seed.json src/common/prisma/seed.ts"
+  },
+  "prisma": {
+    "seed": "npm run seed"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",

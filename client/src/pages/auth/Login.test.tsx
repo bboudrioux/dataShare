@@ -37,7 +37,7 @@ describe("Composant Login", () => {
     fireEvent.change(passwordInput, { target: { value: "password123" } });
 
     // 2. Clic sur le bouton "Connexion"
-    const loginBtn = screen.getByRole("button", { name: /Connexion/i });
+    const loginBtn = screen.getByRole("button", { name: /Se connecter/i });
     fireEvent.click(loginBtn);
 
     await waitFor(() => {
@@ -66,7 +66,7 @@ describe("Composant Login", () => {
     );
 
     // 3. On clique sur connexion
-    const loginBtn = screen.getByRole("button", { name: /Connexion/i });
+    const loginBtn = screen.getByRole("button", { name: /Se connecter/i });
     fireEvent.click(loginBtn);
 
     // 4. On attend que le toast soit appelé

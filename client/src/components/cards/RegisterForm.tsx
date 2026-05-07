@@ -29,7 +29,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
 
   return (
     <div className="auth-card">
+      <div className="auth-logo">DataShare</div>
       <h2 className="auth-title">Créer un compte</h2>
+      <p className="auth-subtitle">Rejoins DataShare pour partager tes fichiers.</p>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label>Email</label>
@@ -54,7 +56,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
           />
         </div>
         <div className="form-group">
-          <label>Vérification du mot de passe</label>
+          <label>Confirmer le mot de passe</label>
           <input
             type="password"
             placeholder="Saisissez le à nouveau"
@@ -64,22 +66,21 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
             required
           />
         </div>
-
+        <AppButton
+          label={isLoading ? "Création..." : "Créer mon compte"}
+          variant="filled"
+          type="submit"
+          className="btn-full"
+          disabled={isLoading}
+        />
         <div className="auth-footer">
           <button
             type="button"
             className="link-btn"
             onClick={onNavigateToLogin}
           >
-            J'ai déjà un compte
+            Déjà un compte ? <span>Se connecter</span>
           </button>
-          <AppButton
-            label={isLoading ? "Création..." : "Créer mon compte"}
-            variant="filled"
-            type="submit"
-            className="btn-full"
-            disabled={isLoading}
-          />
         </div>
       </form>
     </div>

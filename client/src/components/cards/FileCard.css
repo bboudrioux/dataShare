@@ -7,18 +7,108 @@
   box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 18px;
   margin: 0 auto;
 }
 
 .file-card-title {
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 700;
   text-align: center;
   margin: 0;
   color: #f1f5f9;
 }
 
+/* File selection zone */
+.file-select-zone {
+  border: 1.5px dashed rgba(6, 182, 212, 0.25);
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  background: rgba(6, 182, 212, 0.03);
+  transition: all 0.2s;
+}
+
+.file-select-zone:hover {
+  border-color: rgba(6, 182, 212, 0.45);
+  background: rgba(6, 182, 212, 0.06);
+}
+
+.file-select-zone.has-file {
+  border-style: solid;
+  border-color: rgba(6, 182, 212, 0.2);
+  background: rgba(6, 182, 212, 0.04);
+  padding: 16px 20px;
+}
+
+.file-select-icon-ring {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(6, 182, 212, 0.1);
+  border: 1px solid rgba(6, 182, 212, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.file-select-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: rgba(6, 182, 212, 0.12);
+  border: 1px solid rgba(6, 182, 212, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.file-select-prompt {
+  text-align: center;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.file-select-prompt strong {
+  color: #22d3ee;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.file-select-prompt span {
+  color: #475569;
+  font-size: 12px;
+}
+
+.file-selected-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.file-select-text {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.file-change-hint {
+  font-size: 12px;
+  color: #22d3ee;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+/* Original file card elements */
 .file-info-container {
   display: flex;
   align-items: center;
@@ -44,17 +134,18 @@
 
 .file-name {
   font-weight: 500;
-  font-size: 15px;
+  font-size: 14px;
   color: #e2e8f0;
-  max-width: 180px;
+  max-width: 200px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .file-size {
-  font-size: 13px;
+  font-size: 12px;
   color: #64748b;
+  margin-top: 1px;
 }
 
 .error-message {
@@ -63,25 +154,33 @@
   margin: 0;
 }
 
+.success-content {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
 .success-text {
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.5;
-  margin-bottom: 12px;
-  color: #e2e8f0;
+  margin: 0;
+  color: #94a3b8;
 }
 
 .url-display {
   background: rgba(6, 182, 212, 0.06);
   border: 1px solid rgba(6, 182, 212, 0.2);
   padding: 12px 16px;
-  border-radius: 12px;
+  border-radius: 10px;
   text-align: center;
+  word-break: break-all;
 }
 
 .url-display a {
   color: #22d3ee;
   text-decoration: underline;
   font-weight: 500;
+  font-size: 13px;
 }
 
 .info-alert {
@@ -96,16 +195,24 @@
   border: 1px solid rgba(59, 130, 246, 0.2);
 }
 
+.form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 7px;
 }
 
 .form-group label {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
   color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .form-input {
@@ -117,11 +224,31 @@
   transition: border-color 0.2s, box-shadow 0.2s;
   background: rgba(255, 255, 255, 0.04);
   color: #e2e8f0;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .form-input:focus {
   border-color: rgba(6, 182, 212, 0.5);
   box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.08);
+}
+
+.form-select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+}
+
+.form-select option {
+  background: #0a0e14;
+  color: #e2e8f0;
+}
+
+.form-footer {
+  margin-top: 4px;
 }
 
 .btn-full {
@@ -179,7 +306,7 @@
   padding: 12px 16px;
   border-radius: 8px;
   font-size: 14px;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .info-alert-box.info-alert {

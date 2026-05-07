@@ -45,65 +45,59 @@ const UploadFileCard: React.FC<UploadFileCardProps> = ({
 
   return (
     <div className={`file-card ${mode}`}>
-      <h2 className="file-card-title">Ajouter un fichier</h2>
+      <h2 className="file-card-title">Envoyer un fichier</h2>
 
       {mode !== "success" && (
-        <div className="file-info-container">
-          <div className="file-details">
-            <div className="file-icon-wrapper">
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                <circle cx="8.5" cy="8.5" r="1.5" />
-                <polyline points="21 15 16 10 5 21" />
-              </svg>
-            </div>
-            <div className="file-text">
-              <span className="file-name">
-                {file ? file.name : "Aucun fichier sélectionné"}
-              </span>
-              {file && (
-                <span className="file-size">{formatBytes(file.size)}</span>
-              )}
-            </div>
-          </div>
-          <AppButton
-            label="Changer"
-            variant="outline"
-            className="btn-small"
+        <>
+          <div
+            className={`file-select-zone ${file ? "has-file" : ""}`}
             onClick={() => hiddenFileInput.current?.click()}
-          />
+          >
+            {file ? (
+              <div className="file-selected-info">
+                <div className="file-select-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" />
+                    <polyline points="13 2 13 9 20 9" />
+                  </svg>
+                </div>
+                <div className="file-select-text">
+                  <span className="file-name">{file.name}</span>
+                  <span className="file-size">{formatBytes(file.size)}</span>
+                </div>
+                <span className="file-change-hint">Changer</span>
+              </div>
+            ) : (
+              <>
+                <div className="file-select-icon-ring">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="17 8 12 3 7 8" />
+                    <line x1="12" y1="3" x2="12" y2="15" />
+                  </svg>
+                </div>
+                <p className="file-select-prompt">
+                  <strong>Choisir un fichier</strong>
+                  <span>cliquer pour parcourir</span>
+                </p>
+              </>
+            )}
+          </div>
           <input
             type="file"
             ref={hiddenFileInput}
             onChange={handleFileChange}
             style={{ display: "none" }}
           />
-        </div>
+        </>
       )}
 
       {mode === "upload" && (
         <div className="form-fields">
           <div className="form-group">
-            <label>Mot de passe</label>
-            <input
-              type="password"
-              placeholder="Optionnel"
-              className="form-input"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-          <div className="form-group">
             <label>Expiration</label>
             <select
-              className="form-input"
+              className="form-input form-select"
               defaultValue="Une semaine"
               onChange={(e) => {
                 let exp = Date.now();
@@ -119,12 +113,26 @@ const UploadFileCard: React.FC<UploadFileCardProps> = ({
               <option>Une semaine</option>
             </select>
           </div>
+          <div className="form-group">
+            <label>Mot de passe (optionnel)</label>
+            <input
+              type="password"
+              placeholder="Laisser vide si aucun"
+              className="form-input"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
         </div>
       )}
 
       {mode === "success" && (
         <div className="success-content">
-          <p>Félicitations, ton fichier sera conservé pendant une semaine !</p>
+          <div className="info-success-box">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Fichier envoyé avec succès !</span>
+          </div>
+          <p className="success-text">Partage ce lien — il expirera automatiquement.</p>
           <div className="url-display">
             <a href={shareUrl} target="_blank" rel="noreferrer">
               {shareUrl}
@@ -144,11 +152,11 @@ const UploadFileCard: React.FC<UploadFileCardProps> = ({
           label={
             mode === "success"
               ? copiedLink
-                ? "Copié !"
+                ? "✓ Copié !"
                 : "Copier le lien"
-              : "Téléverser"
+              : "Envoyer le fichier"
           }
-          variant="outline"
+          variant="filled"
           className="btn-full"
           disabled={!file && mode === "upload"}
           onClick={handleAction}

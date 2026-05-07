@@ -75,7 +75,7 @@ describe("Composant Register", () => {
   it("doit naviguer vers la page de connexion", () => {
     render(<Register />);
     const loginBtn = screen.getByRole("button", {
-      name: /J'ai déjà un compte/i,
+      name: /Déjà un compte/i,
     });
 
     fireEvent.click(loginBtn);

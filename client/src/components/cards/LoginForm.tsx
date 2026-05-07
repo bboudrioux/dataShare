@@ -23,7 +23,9 @@ const LoginForm: React.FC<LoginFormProps> = ({
 
   return (
     <div className="auth-card">
-      <h2 className="auth-title">Connexion</h2>
+      <div className="auth-logo">DataShare</div>
+      <h2 className="auth-title">Bon retour 👋</h2>
+      <p className="auth-subtitle">Connecte-toi pour accéder à tes fichiers.</p>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label>Email</label>
@@ -47,22 +49,21 @@ const LoginForm: React.FC<LoginFormProps> = ({
             required
           />
         </div>
-
+        <AppButton
+          label={isLoading ? "Connexion..." : "Se connecter"}
+          variant="filled"
+          type="submit"
+          className="btn-full"
+          disabled={isLoading}
+        />
         <div className="auth-footer">
           <button
             type="button"
             className="link-btn"
             onClick={onNavigateToRegister}
           >
-            Créer un compte
+            Pas encore de compte ? <span>Créer un compte</span>
           </button>
-          <AppButton
-            label={isLoading ? "Connexion..." : "Connexion"}
-            variant="filled"
-            type="submit"
-            className="btn-full"
-            disabled={isLoading}
-          />
         </div>
       </form>
     </div>

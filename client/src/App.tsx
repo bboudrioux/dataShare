@@ -4,18 +4,17 @@ import { Bounce, ToastContainer } from "react-toastify";
 import { setApiToken } from "./services/index.ts";
 import Header from "./components/partials/Header.tsx";
 import Footer from "./components/partials/Footer.tsx";
+import AnimatedBackground from "./components/AnimatedBackground.tsx";
 
 function App() {
   const navigate = useNavigate();
   const [token, setToken] = useState<string | null>(null);
 
-  // 1. Synchroniser le token avec Axios au montage
   useEffect(() => {
     if (token) setApiToken(token);
     else setApiToken("");
   }, [token]);
 
-  // 2. Écouter l'événement de déconnexion forcée
   useEffect(() => {
     const handleUnauthorized = () => {
       setToken(null);
@@ -29,24 +28,27 @@ function App() {
 
   return (
     <>
-      <Header token={token} setToken={setToken} />
-      <main>
-        <Outlet context={{ token, setToken }} />
-        <ToastContainer
-          position="top-left"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick={false}
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="colored"
-          transition={Bounce}
-        />
-      </main>
-      <Footer />
+      <AnimatedBackground />
+      <div className="app-shell">
+        <Header token={token} setToken={setToken} />
+        <main>
+          <Outlet context={{ token, setToken }} />
+          <ToastContainer
+            position="top-left"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick={false}
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="colored"
+            transition={Bounce}
+          />
+        </main>
+        <Footer />
+      </div>
     </>
   );
 }

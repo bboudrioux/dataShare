@@ -56,6 +56,14 @@ img {
   height: auto;
 }
 
+.app-shell {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 .bold-text {
   font-weight: 700;
 }

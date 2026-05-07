@@ -18,9 +18,7 @@ const Header = ({ token, setToken }: HeaderProps) => {
     window.dispatchEvent(new CustomEvent("toggle-sidebar"));
 
   const logout = () => {
-    if (setToken) {
-      setToken(null);
-    }
+    if (setToken) setToken(null);
     navigate("/login");
   };
 
@@ -30,16 +28,16 @@ const Header = ({ token, setToken }: HeaderProps) => {
         {isDashboard && (
           <button className="menu-mobile-btn" onClick={triggerMenu}>
             <svg
-              width="24"
-              height="24"
+              width="22"
+              height="22"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
               strokeWidth="2"
             >
-              <line x1="3" y1="12" x2="21" y2="12"></line>
-              <line x1="3" y1="6" x2="21" y2="6"></line>
-              <line x1="3" y1="18" x2="21" y2="18"></line>
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="18" x2="21" y2="18" />
             </svg>
           </button>
         )}
@@ -54,19 +52,24 @@ const Header = ({ token, setToken }: HeaderProps) => {
             {isDashboard ? (
               <AppButton
                 label="Ajouter un fichier"
-                variant="filled-dark"
+                variant="filled"
                 onClick={triggerModal}
+                className="btn-header-action"
               />
             ) : (
               <AppButton
                 label="Mon espace"
-                variant="filled-dark"
+                variant="filled"
                 onClick={() => navigate("/dashboard")}
+                className="btn-header-action"
               />
             )}
-            <button className="logout-link hide-mobile" onClick={logout}>
-              Déconnexion
-            </button>
+            <AppButton
+              label="Déconnexion"
+              variant="outline"
+              onClick={logout}
+              className="btn-header-logout hide-mobile"
+            />
           </>
         ) : (
           <AppButton

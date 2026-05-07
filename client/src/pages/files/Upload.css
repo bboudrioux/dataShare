@@ -118,6 +118,10 @@
 }
 
 @media (max-width: 768px) {
+  .section-upload {
+    padding: 40px 16px;
+  }
+
   .upload-hero-title {
     font-size: 30px;
     letter-spacing: -0.5px;
@@ -125,5 +129,19 @@
 
   .upload-dropzone {
     padding: 28px 20px;
+  }
+}
+
+@media (max-width: 400px) {
+  .upload-hero-title {
+    font-size: 26px;
+  }
+
+  .upload-hero-badge {
+    font-size: 11px;
+  }
+
+  .upload-hero-sub {
+    font-size: 13px;
   }
 }
